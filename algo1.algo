@@ -1,0 +1,50 @@
+PROGRAM Main;
+VAR
+    char_count, word_count, vowel_count: INTEGER;
+
+PROCEDURE count_sentence(VAR char_count, word_count, vowel_count: INTEGER);
+VAR
+    c: CHAR;
+    in_word, done: BOOLEAN;
+BEGIN
+    char_count := 0;
+    word_count := 0;
+    vowel_count := 0;
+    in_word := FALSE;
+    done := FALSE;
+    
+    WHILE (NOT done) DO
+    BEGIN
+        c := read_char();  // Assumes read_char() reads next character
+        char_count := char_count + 1;
+        
+        // Check for vowels
+        IF (c = 'a') OR (c = 'e') OR (c = 'i') OR (c = 'o') OR (c = 'u') OR
+           (c = 'A') OR (c = 'E') OR (c = 'I') OR (c = 'O') OR (c = 'U') THEN
+            vowel_count := vowel_count + 1;
+        
+        // Handle word boundaries
+        IF (c = ' ') OR (c = '.') THEN
+        BEGIN
+            IF in_word THEN
+            BEGIN
+                word_count := word_count + 1;
+                in_word := FALSE;
+            END;
+            IF (c = '.') THEN
+                done := TRUE;
+        END
+        ELSE
+        BEGIN
+            IF NOT in_word THEN
+                in_word := TRUE;
+        END;
+    END;
+END;
+
+BEGIN
+    count_sentence(char_count, word_count, vowel_count);
+    writeln(char_count);
+    writeln(word_count);
+    writeln(vowel_count);
+END.
